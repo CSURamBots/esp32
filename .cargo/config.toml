@@ -24,13 +24,11 @@ rustflags = ["-C", "default-linker-libraries"]
 [unstable]
 build-std = ["std", "panic_abort"]
 build-std-features = ["panic_immediate_abort"]
-
-# DO NOT DELETE
-# The following two give a warning in cargo make
-# but they are required for the actual +esp making
-# TODO: can we silence the cargo warning on this part?
-configurable-env = true
-extra-link-arg = true
+# Note: the esp target needs these because it's not at 1.56 yet
+# but leaving these in causes cargo make to throw a warning
+# so they're commented out here, and added as -Zoption in Makefile.toml
+# configurable-env = true
+# extra-link-arg = true
 
 [env]
 ESP_IDF_SYS_GLOB_BASE = { value = ".", relative = true }

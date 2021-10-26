@@ -15,13 +15,13 @@ dependencies = ["toolchain-init"]
 [tasks.build]
 env_files = [ "./toolchain-deps/espressif.env" ]
 command = "cargo"
-args = ["+esp", "build"]
+args = ["+esp", "build", "-Zconfigurable-env", "-Zextra-link-arg"]
 dependencies = ["toolchain-env"]
 
 [tasks.flash]
 install_crate = "espflash"
 command = "espflash"
-args = ["/dev/ttyUSB0", "target/xtensa-esp32-espidf/debug/esp32"]
+args = ["/dev/ttyUSB0", "target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAME}"]
 dependencies = ["build"]
 
 [tasks.run]
@@ -31,5 +31,12 @@ dependencies = ["build", "flash"]
 
 [tasks.test]
 # Note: tests may not be possible, or even required
-#       they would be nice, but I'm pretty sure we'd have to do some mixed-platform stuff
+#       tests would be nice, but I'm pretty sure we'd have to do some mixed-platform stuff
 disabled = true
+
+[tasks.format]
+# we need to do this with +esp or else cargo complains about unused keys
+install_crate = { rustup_component_name = "rustfmt" }
+command = "cargo"
+args = ["+esp", "fmt"]
+dependencies = ["toolchain-env"]
