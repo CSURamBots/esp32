@@ -3,7 +3,14 @@
 # check if already installed
 if rustup toolchain list | grep -Poq '^esp$'
 then
-	exit 0
+	if test -f toolchain-deps/rust-build/espressif.env.raw
+	then
+		exit 0
+	else
+		# toolchain is installed, but we don't know where
+		# TODO: figure out a better way of handling this
+		rustup toolchain uninstall esp
+	fi
 fi
 
 echo "Installing esp rustup toolchain"

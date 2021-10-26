@@ -2,3 +2,4 @@
 /target/
 /toolchain-deps/*
 !/toolchain-deps/*.sh
+/espressif.env.raw
