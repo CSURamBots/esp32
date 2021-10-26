@@ -25,9 +25,10 @@ args = ["/dev/ttyUSB0", "target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAM
 dependencies = ["build"]
 
 [tasks.run]
-command = "cargo"
-args = ["+esp", "pio", "espidf", "monitor", "/dev/ttyUSB0"]
-dependencies = ["build", "flash"]
+install_crate = "espmonitor"
+command = "espmonitor"
+args = ["--speed", "115200", "/dev/ttyUSB0"]
+#dependencies = ["flash"]
 
 [tasks.test]
 # Note: tests may not be possible, or even required
