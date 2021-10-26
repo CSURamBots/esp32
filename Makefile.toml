@@ -8,18 +8,15 @@ command = "./toolchain-deps/init-toolchain.sh"
 command = "./toolchain-deps/env-toolchain.sh"
 dependencies = ["toolchain-init"]
 
-[tasks.flash]
+[tasks.run]
 command = "cargo"
-args = ["espflash"]
-
-[tasks.monitor]
-command = "cargo"
-args = ["espmonitor"]
+args = ["+esp", "espflash", "--monitor", "/dev/ttyUSB0"]
+dependencies = ["build"]
 
 [tasks.build]
 env_files = [
           "./toolchain-deps/espressif.env"
 ]
 command = "cargo"
-args = ["build"]
+args = ["+esp", "build"]
 dependencies = ["toolchain-env"]
