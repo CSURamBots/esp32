@@ -1,0 +1,3 @@
+[submodule "toolchain-deps/rust-build"]
+	path = toolchain-deps/rust-build
+	url = https://github.com/esp-rs/rust-build

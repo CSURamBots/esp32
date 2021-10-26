@@ -1,0 +1,25 @@
+[tasks.default]
+dependencies = ["build"]
+
+[tasks.toolchain-init]
+command = "./toolchain-deps/init-toolchain.sh"
+
+[tasks.toolchain-env]
+command = "./toolchain-deps/env-toolchain.sh"
+dependencies = ["toolchain-init"]
+
+[tasks.flash]
+command = "cargo"
+args = ["espflash"]
+
+[tasks.monitor]
+command = "cargo"
+args = ["espmonitor"]
+
+[tasks.build]
+env_files = [
+          "./toolchain-deps/espressif.env"
+]
+command = "cargo"
+args = ["build"]
+dependencies = ["toolchain-env"]
