@@ -22,13 +22,17 @@ dependencies = ["toolchain-env"]
 install_crate = "espflash"
 command = "espflash"
 args = ["/dev/ttyUSB0", "target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAME}"]
-dependencies = ["build"]
+#dependencies = ["build"]
 
 [tasks.run]
 install_crate = "espmonitor"
 command = "espmonitor"
 args = ["--speed", "115200", "/dev/ttyUSB0"]
-#dependencies = ["flash"]
+dependencies = ["flash"]
+
+[tasks.watch-remote]
+command = "./build_remote.sh"
+args = ["notroot", "ssh.pohldev.in", "/home/notroot/Desktop/esp32/target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAME}", "target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAME}"]
 
 [tasks.test]
 # Note: tests may not be possible, or even required
