@@ -45,3 +45,12 @@ install_crate = { rustup_component_name = "rustfmt" }
 command = "cargo"
 args = ["+esp", "fmt"]
 dependencies = ["toolchain-env"]
+[tasks.fmt]
+alias="format"
+
+[tasks.clippy]
+install_crate = { rustup_component_name = "clippy" }
+env_files = [ "./toolchain-deps/espressif.env" ]
+command = "cargo"
+args = ["+esp", "clippy", "--package", "${CARGO_MAKE_CRATE_NAME}", "-Zconfigurable-env", "-Zextra-link-arg", "${@}"]
+dependencies = ["toolchain-env"]

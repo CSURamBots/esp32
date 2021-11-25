@@ -20,7 +20,8 @@ ENDCFG
 
 # Open a SSH tunnel:
 if test -f "$SOCKET_FILE"; then
-	ssh -S "$SOCKET_FILE" -O exit "$SOCKET_NAME"
+    touch "$SOCKET_FILE"
+    ssh -S "$SOCKET_FILE" -O exit "$SOCKET_NAME"
 fi
 
 ssh -S "$SOCKET_FILE" -M -F "$SSH_CFG" -f -N -l $TARGET_USER $TARGET_ADDRESS
@@ -31,6 +32,7 @@ kill_ssh()
 {
 	echo "Killing ssh tunnel"
 	ssh -S "$SOCKET_FILE" -O exit "$SOCKET_NAME"
+	rm -f "$SOCKET_FILE"
 	exit 0
 }
 
