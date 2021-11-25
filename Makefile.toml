@@ -1,6 +1,7 @@
 [env]
 RUST_ESP32_STD_DEMO_WIFI_SSID = "Devins hotspot"
 RUST_ESP32_STD_DEMO_WIFI_PASS = "eeeeeeee"
+RUSTUP_TOOLCHAIN = "esp"
 
 [tasks.default]
 dependencies = ["build"]
@@ -15,7 +16,7 @@ dependencies = ["toolchain-init"]
 [tasks.build]
 env_files = [ "./toolchain-deps/espressif.env" ]
 command = "cargo"
-args = ["+esp", "build", "-Zconfigurable-env", "-Zextra-link-arg"]
+args = ["build", "-Zconfigurable-env", "-Zextra-link-arg"]
 dependencies = ["toolchain-env"]
 
 [tasks.flash]
@@ -41,16 +42,29 @@ disabled = true
 
 [tasks.format]
 # we need to do this with +esp or else cargo complains about unused keys
-install_crate = { rustup_component_name = "rustfmt" }
+install_crate = false
 command = "cargo"
-args = ["+esp", "fmt"]
+args = ["fmt"]
 dependencies = ["toolchain-env"]
 [tasks.fmt]
 alias="format"
+
+[tasks.check]
+env_files = [ "./toolchain-deps/espressif.env" ]
+command = "cargo"
+args = ["check", "-Zconfigurable-env", "-Zextra-link-arg", "${@}"]
+dependencies = ["toolchain-env"]
+
+[tasks.fix]
+install_crate = false
+env_files = [ "./toolchain-deps/espressif.env" ]
+command = "cargo"
+args = ["fix", "-Zconfigurable-env", "-Zextra-link-arg", "${@}"]
+dependencies = ["toolchain-env"]
 
 [tasks.clippy]
 install_crate = { rustup_component_name = "clippy" }
 env_files = [ "./toolchain-deps/espressif.env" ]
 command = "cargo"
-args = ["+esp", "clippy", "--package", "${CARGO_MAKE_CRATE_NAME}", "-Zconfigurable-env", "-Zextra-link-arg", "${@}"]
+args = ["clippy", "-Zconfigurable-env", "-Zextra-link-arg", "--package", "${CARGO_MAKE_CRATE_NAME}", "${@}"]
 dependencies = ["toolchain-env"]

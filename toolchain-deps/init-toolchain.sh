@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# override build script
+export RUSTUP_TOOLCHAIN="stable"
+
 # check if already installed
 if rustup toolchain list | grep -Poq '^esp$'
 then
