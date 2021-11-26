@@ -1,6 +1,4 @@
 [env]
-RUST_ESP32_STD_DEMO_WIFI_SSID = "Devins hotspot"
-RUST_ESP32_STD_DEMO_WIFI_PASS = "eeeeeeee"
 RUSTUP_TOOLCHAIN = "esp"
 
 [tasks.default]
@@ -23,7 +21,7 @@ dependencies = ["toolchain-env"]
 install_crate = "espflash"
 command = "espflash"
 args = ["/dev/ttyUSB0", "target/xtensa-esp32-espidf/debug/${CARGO_MAKE_CRATE_NAME}"]
-#dependencies = ["build"]
+dependencies = ["build"]
 
 [tasks.run]
 install_crate = "espmonitor"
@@ -62,8 +60,14 @@ command = "cargo"
 args = ["fix", "-Zconfigurable-env", "-Zextra-link-arg", "${@}"]
 dependencies = ["toolchain-env"]
 
+[tasks.superclean]
+install_crate = false
+command = "rm"
+args = ["-rf", ".espressif", "toolchain-deps/espressif", "toolchain-deps/espressif.env", "toolchain-deps/rust-build"]
+dependencies = ["clean"]
+
 [tasks.clippy]
-install_crate = { rustup_component_name = "clippy" }
+install_crate = false
 env_files = [ "./toolchain-deps/espressif.env" ]
 command = "cargo"
 args = ["clippy", "-Zconfigurable-env", "-Zextra-link-arg", "--package", "${CARGO_MAKE_CRATE_NAME}", "${@}"]
